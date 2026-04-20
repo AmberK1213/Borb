@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 3,
   "targets": {
     "net10.0": {
       "Aspire.Dashboard.Sdk.win-x64/13.1.0": {
@@ -3337,23 +3337,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\amber\\.nuget\\packages\\": {},
+    "C:\\Users\\sophi\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\amber\\source\\repos\\Borb\\Borb\\Borb.csproj",
+      "projectUniqueName": "C:\\Projects\\Borb\\Borb\\Borb.csproj",
       "projectName": "Borb",
-      "projectPath": "C:\\Users\\amber\\source\\repos\\Borb\\Borb\\Borb.csproj",
-      "packagesPath": "C:\\Users\\amber\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\amber\\source\\repos\\Borb\\Borb\\obj\\",
+      "projectPath": "C:\\Projects\\Borb\\Borb\\Borb.csproj",
+      "packagesPath": "C:\\Users\\sophi\\.nuget\\packages\\",
+      "outputPath": "C:\\Projects\\Borb\\Borb\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\amber\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\sophi\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3367,7 +3367,6 @@
       },
       "frameworks": {
         "net10.0": {
-          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {}
         }
@@ -3382,11 +3381,10 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.300"
+      "SdkAnalysisLevel": "10.0.200"
     },
     "frameworks": {
       "net10.0": {
-        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "Aspire.Dashboard.Sdk.win-x64": {
@@ -3421,7 +3419,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300-preview.0.26177.108/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
