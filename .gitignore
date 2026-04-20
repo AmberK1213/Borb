@@ -41,3 +41,5 @@ node_modules/
 /src/bin/Debug/net10.0
 /src/obj/Debug/net10.0
 /src/obj/Release/net10.0
+/Borb/appsettings.json
+/Borb/appsettings.json
