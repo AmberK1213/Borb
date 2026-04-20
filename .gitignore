@@ -4,3 +4,24 @@
 
 /.vs/Borb.slnx/FileContentIndex/23992dd4-6e73-4306-aeff-432d913a1e48.vsidx
 /.vs/Borb.slnx/FileContentIndex/502171e6-5266-4834-b031-9138028415e2.vsidx
+/.vs/Borb.slnx/config
+bin/
+obj/
+.vs/
+*.user
+*.suo
+appsettings.Development.json
+node_modules/
+*.log
+/.vs/slnx.sqlite
+./obj
+.\obj
+/Borb/obj/Debug/net10.0/Borb.AssemblyInfo.cs
+/Borb/obj/Debug/net10.0/Borb.AssemblyInfoInputs.cache
+/src/obj/Debug/net10.0/rpswa.dswa.cache.json
+/src/obj/Debug/net10.0/src.AssemblyInfo.cs
+/src/obj/Debug/net10.0/src.AssemblyInfoInputs.cache
+/src/obj/Debug/net10.0/src.assets.cache
+/src/obj/project.assets.json
+/src/obj/project.nuget.cache
+/src/obj/src.csproj.nuget.dgspec.json
