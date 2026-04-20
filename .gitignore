@@ -25,3 +25,5 @@ node_modules/
 /src/obj/project.assets.json
 /src/obj/project.nuget.cache
 /src/obj/src.csproj.nuget.dgspec.json
+/.vs/Borb/CopilotIndices/18.6.39495.22055/SemanticSymbols.db
+/.vs/Borb/CopilotIndices/18.6.39495.22055/SemanticSymbols.db-wal
