@@ -42,3 +42,4 @@ node_modules/
 /src/obj/Debug/net10.0
 /src/obj/Release/net10.0
 /src/appsettings.Development.json
+/src/appsettings.Development.json
