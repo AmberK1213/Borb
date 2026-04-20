@@ -17,6 +17,4 @@ public class MongoDbService
 
     public IMongoCollection<User> Users =>
         _database.GetCollection<User>("Users");
-    public IMongoCollection<Topic> Topics =>
-        _database.GetCollection<Topic>("Topics");
 }
