@@ -2,6 +2,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<MongoDbService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -17,6 +20,9 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// Map attribute-routed API controllers (e.g. AuthController)
+app.MapControllers();
 
 app.MapStaticAssets();
 
