@@ -1,9 +1,13 @@
+using src.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<MongoDbService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<TopicService>();
+builder.Services.AddScoped<SubscriptionService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
