@@ -50,3 +50,7 @@ node_modules/
 /Borb/obj/Debug/net10.0/Aspire/references/_AppHost.ProjectMetadata.g.cs
 /Borb/obj/Debug/net10.0/Borb.GeneratedMSBuildEditorConfig.editorconfig
 /Borb/obj/Debug/net10.0/Borb.csproj.AssemblyReference.cache
+/Borb/obj/Borb.csproj.nuget.dgspec.json
+/Borb/obj/Borb.csproj.nuget.g.props
+/Borb/obj/project.assets.json
+/Borb/obj/project.nuget.cache
