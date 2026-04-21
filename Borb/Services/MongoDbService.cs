@@ -22,4 +22,10 @@ public class MongoDbService
         _database.GetCollection<Topic>("Topics");
     public IMongoCollection<Subscription> Subscriptions =>
         _database.GetCollection<Subscription>("Subscriptions");
+
+    public IMongoCollection<Message> Messages =>
+        _database.GetCollection<Message>("Messages");
+
+    public IMongoCollection<Notification> Notifications =>
+        _database.GetCollection<Notification>("Notifications");
 }

@@ -1,4 +1,3 @@
 <Solution>
   <Project Path="Borb/Borb.csproj" />
-  <Project Path="src/src.csproj" />
 </Solution>
