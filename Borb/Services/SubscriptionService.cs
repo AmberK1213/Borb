@@ -39,4 +39,10 @@ public class SubscriptionService
             .Find(x => x.UserId == userId)
             .ToListAsync();
     }
+    public async Task<List<Subscription>> GetByTopicId(string topicId)
+    {
+        return await _mongo.Subscriptions
+            .Find(x => x.TopicId == topicId)
+            .ToListAsync();
+    }
 }
