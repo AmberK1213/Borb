@@ -1,6 +1,7 @@
 using MongoDB.Driver;
 using src.Models;
 
+
 public class MongoDbService
 {
     private readonly IMongoDatabase _database;
@@ -19,4 +20,6 @@ public class MongoDbService
         _database.GetCollection<User>("Users");
     public IMongoCollection<Topic> Topics =>
         _database.GetCollection<Topic>("Topics");
+    public IMongoCollection<Subscription> Subscriptions =>
+        _database.GetCollection<Subscription>("Subscriptions");
 }
