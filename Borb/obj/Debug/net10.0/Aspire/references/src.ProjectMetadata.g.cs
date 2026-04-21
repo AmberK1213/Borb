@@ -15,7 +15,7 @@ public class src : global::Aspire.Hosting.IProjectMetadata
     /// <summary>
     /// The path to the src project.
     /// </summary>
-    public string ProjectPath => """C:\Users\amber\source\repos\Borb\src\src.csproj""";
+    public string ProjectPath => """C:\Projects\Borb\src\src.csproj""";
 
     /// <summary>
     /// Gets a value indicating whether building the project before running it should be suppressed.

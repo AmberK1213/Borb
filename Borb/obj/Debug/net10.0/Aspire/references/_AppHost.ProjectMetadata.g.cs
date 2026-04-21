@@ -17,5 +17,5 @@ public class Borb
     /// <summary>
     /// The path to the Aspire Host project.
     /// </summary>
-    public static string ProjectPath => """C:\Users\amber\source\repos\Borb\Borb""";
+    public static string ProjectPath => """C:\Projects\Borb\Borb""";
 }
