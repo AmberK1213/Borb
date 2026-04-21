@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<MongoDbService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<TopicService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();

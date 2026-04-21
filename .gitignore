@@ -43,3 +43,6 @@ node_modules/
 /src/obj/Release/net10.0
 /src/appsettings.Development.json
 /src/appsettings.Development.json
+/.postman
+/Borb/obj/Debug/net10.0/Borb.assets.cache
+/postman/globals
