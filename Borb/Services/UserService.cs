@@ -1,7 +1,6 @@
 using MongoDB.Driver;
 using src.Models;
 
-
 public class UserService
 {
     private readonly MongoDbService _mongo;
