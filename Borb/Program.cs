@@ -1,10 +1,13 @@
 using src.Services;
+using src.Models;
+
 
 public partial class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.Configuration.AddUserSecrets<Program>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
@@ -16,6 +19,7 @@ public partial class Program
         builder.Services.AddScoped<MessageService>();
         builder.Services.AddScoped<NotificationService>();
         builder.Services.AddScoped<IObserver, UserObserver>();
+        builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
 
         var app = builder.Build();
 
@@ -27,14 +31,13 @@ public partial class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthorization();
         app.MapControllers();
-        app.UseStaticFiles();
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}")
-            .WithStaticAssets();
+            pattern: "{controller=Home}/{action=Index}/{id?}");
 
         app.Run();
     }
