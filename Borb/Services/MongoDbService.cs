@@ -1,19 +1,19 @@
 using MongoDB.Driver;
 using src.Models;
+using Microsoft.Extensions.Options;
+using System.Security.Cryptography.X509Certificates;
 
 
 public class MongoDbService
 {
     private readonly IMongoDatabase _database;
-    public MongoDbService(IConfiguration config)
+    public MongoDbService(IOptions<MongoDbSettings> settings)
     {
-        var client = new MongoClient(
-            config["MongoDbSettings:ConnectionString"]
-            );
-        _database = client.GetDatabase(
-            config["MongoDbSettings:DatabaseName"]
-            );
-     
+        var mongoSettings = settings.Value;
+
+        var client = new MongoClient(mongoSettings.ConnectionString);
+        _database = client.GetDatabase(mongoSettings.DatabaseName);
+
     }
 
     public IMongoCollection<User> Users =>
