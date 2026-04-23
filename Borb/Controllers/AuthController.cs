@@ -43,9 +43,8 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("test")]
-    public async Task<IActionResult> Test()
+    public IActionResult Test()
     {
-        var user = await _userService.Register("borb", "123");
-        return Ok(user);
+        return Ok("Auth controller works");
     }
 }

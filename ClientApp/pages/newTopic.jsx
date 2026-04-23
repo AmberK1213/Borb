@@ -2,11 +2,34 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import borblogo from '../assets/borblogo.png'
 import styles from './newTopic.module.css'
+import { createTopic } from '../api'
 
 export default function StartNewTopic() {
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const user = JSON.parse(localStorage.getItem('currentUser'))
+  const handleCreate = async () => {
+  if (!title) {
+    alert('Title is required')
+    return
+  }
+
+  if (!user) {
+    alert('You must be logged in')
+    return
+  }
+
+  try {
+    await createTopic(title, user.id)
+    alert('Topic created!')
+
+    navigate('/') // go back to dashboard
+  } catch (err) {
+    console.error(err)
+    alert('Failed to create topic')
+  }
+}
 
   return (
     <div className={styles.page}>
@@ -56,7 +79,7 @@ export default function StartNewTopic() {
             <button className={styles.cancelBtn} onClick={() => navigate('/')}>
               Cancel
             </button>
-            <button className={styles.createBtn}>
+            <button className={styles.createBtn} onClick={handleCreate}>
               Create Topic
             </button>
           </div>

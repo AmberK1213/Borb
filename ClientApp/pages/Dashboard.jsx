@@ -1,9 +1,14 @@
 import { useNavigate } from 'react-router-dom'
 import borblogo from '../assets/borblogo.png'
 import styles from './Dashboard.module.css'
+import { useState, useEffect } from 'react'
+import { getUserSubscriptions, getMessages, unsubscribe, getTopicById } from '../api.js'
 
 // TODO: replace with real auth state
-const currentUser = null
+const getCurrentUser = () => {
+  const user = localStorage.getItem('currentUser')
+  return user ? JSON.parse(user) : null
+}
 
 const SUBSCRIBED_TOPICS = [
   {
@@ -33,6 +38,64 @@ function getInitial(name) {
 
 export default function Dashboard() {
   const navigate = useNavigate()
+  const [currentUser, setCurrentUser] = useState(getCurrentUser())
+  const [subscribedTopics, setSubscribedTopics] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (currentUser) {
+      fetchSubscribedTopics()
+    } else {
+      setLoading(false)
+    }
+  }, [currentUser])
+
+  const fetchSubscribedTopics = async () => {
+    try {
+        const subs = await getUserSubscriptions(currentUser.id)
+
+        const topicsWithMessages = await Promise.all(
+        subs.map(async (sub) => {
+        const topic = await getTopicById(sub.topicId)
+        const messages = await getMessages(sub.topicId)
+        const recentMessages = messages.slice(-5).reverse()
+
+        return {
+          id: sub.topicId,
+          title: topic?.title || 'Unknown Topic',
+          description: topic?.description || '',
+          recentCount: recentMessages.length,
+          messages: recentMessages.map(msg => ({
+            user: msg.createdBy,
+            date: new Date(msg.createdAt).toLocaleString(),
+            text: msg.content,
+          })),
+    }
+  })
+)
+      setSubscribedTopics(topicsWithMessages)
+    } catch (error) {
+      console.error('Failed to fetch subscribed topics:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser')
+    setCurrentUser(null)
+    setSubscribedTopics([])
+  }
+
+  const handleUnsubscribe = async (topicId) => {
+    if (!currentUser) return
+    try {
+      await unsubscribe(currentUser.Id, topicId)
+      setSubscribedTopics(prev => prev.filter(t => t.id !== topicId))
+    } catch (error) {
+      console.error('Failed to unsubscribe:', error)
+    }
+  }
 
   return (
     <div className={styles.page}>
@@ -43,7 +106,7 @@ export default function Dashboard() {
           <div>
             <h1 className={styles.brandName}>Borb</h1>
             {currentUser
-              ? <p className={styles.welcome}>Welcome back, {currentUser}!</p>
+              ? <p className={styles.welcome}>Welcome back, {currentUser.Username}!</p>
               : <p className={styles.welcome}>Your message exchange community</p>
             }
           </div>
@@ -54,7 +117,7 @@ export default function Dashboard() {
               <button className={styles.statsBtn} onClick={() => navigate('/statistics')}>
                 📈 Statistics
               </button>
-              <button className={styles.logoutBtn}>
+              <button className={styles.logoutBtn} onClick={handleLogout}>
                 ↪ Logout
               </button>
             </>
@@ -82,41 +145,47 @@ export default function Dashboard() {
       <div className={styles.content}>
         <h2 className={styles.sectionTitle}>My Subscribed Topics</h2>
 
-        <div className={styles.topicList}>
-          {SUBSCRIBED_TOPICS.map(topic => (
-            <div key={topic.id} className={styles.topicCard}>
-              <div className={styles.topicHeader}>
-                <div className={styles.topicMeta}>
-                  <h3 className={styles.topicTitle}>{topic.title}</h3>
-                  <span className={styles.recentBadge}>
-                    {topic.recentCount} RECENT MESSAGE{topic.recentCount !== 1 ? 'S' : ''}
-                  </span>
-                </div>
-                <button className={styles.unsubBtn}>Unsubscribe</button>
-              </div>
-
-              <p className={styles.topicDesc}>{topic.description}</p>
-              <p className={styles.recentLabel}>{topic.recentCount} Most Recent Messages:</p>
-
-              <div className={styles.messageList}>
-                {topic.messages.map((msg, i) => (
-                  <div key={i} className={styles.messageCard}>
-                    <div className={styles.msgAvatar}>{getInitial(msg.user)}</div>
-                    <div className={styles.msgContent}>
-                      <span className={styles.msgUser}>{msg.user}</span>
-                      <span className={styles.msgDate}>{msg.date}</span>
-                      <p className={styles.msgText}>{msg.text}</p>
-                    </div>
+        {loading ? (
+          <p>Loading...</p>
+        ) : subscribedTopics.length === 0 ? (
+          <p>No subscribed topics yet. Browse and subscribe to topics!</p>
+        ) : (
+          <div className={styles.topicList}>
+            {subscribedTopics.map(topic => (
+              <div key={topic.id} className={styles.topicCard}>
+                <div className={styles.topicHeader}>
+                  <div className={styles.topicMeta}>
+                    <h3 className={styles.topicTitle}>{topic.title}</h3>
+                    <span className={styles.recentBadge}>
+                      {topic.recentCount} RECENT MESSAGE{topic.recentCount !== 1 ? 'S' : ''}
+                    </span>
                   </div>
-                ))}
-              </div>
+                  <button className={styles.unsubBtn} onClick={() => handleUnsubscribe(topic.id)}>Unsubscribe</button>
+                </div>
 
-              <button className={styles.viewTopicBtn}>
-                View Full Topic & Post Message
-              </button>
-            </div>
-          ))}
-        </div>
+                <p className={styles.topicDesc}>{topic.description}</p>
+                <p className={styles.recentLabel}>{topic.recentCount} Most Recent Messages:</p>
+
+                <div className={styles.messageList}>
+                  {topic.messages.map((msg, i) => (
+                    <div key={i} className={styles.messageCard}>
+                      <div className={styles.msgAvatar}>{getInitial(msg.user)}</div>
+                      <div className={styles.msgContent}>
+                        <span className={styles.msgUser}>{msg.user}</span>
+                        <span className={styles.msgDate}>{msg.date}</span>
+                        <p className={styles.msgText}>{msg.text}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button className={styles.viewTopicBtn}>
+                  View Full Topic & Post Message
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

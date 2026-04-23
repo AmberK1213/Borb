@@ -10,7 +10,16 @@ public partial class Program
         builder.Configuration.AddUserSecrets<Program>();
 
         // Add services to the container.
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddControllers();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowFrontend", policy =>
+            {
+                policy.WithOrigins("http://localhost:5173")
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
+        });
         builder.Services.AddSingleton<MongoDbService>();
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<TopicService>();
@@ -31,13 +40,12 @@ public partial class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseCors("AllowFrontend");
         app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthorization();
         app.MapControllers();
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+        
 
         app.Run();
     }
