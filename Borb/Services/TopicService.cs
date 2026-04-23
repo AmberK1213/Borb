@@ -1,13 +1,17 @@
 ﻿using MongoDB.Driver;
 using src.Models;
+using src.Services;
 
 
 public class TopicService
 {
     private readonly MongoDbService _mongo;
-    public TopicService(MongoDbService mongo)
+    private readonly SubscriptionService _subscriptionService;
+
+    public TopicService(MongoDbService mongo, SubscriptionService subscriptionService)
     {
         _mongo = mongo;
+        _subscriptionService = subscriptionService;
     }
 
     public async Task<Topic> CreateTopic(string title, string userId)
@@ -19,6 +23,8 @@ public class TopicService
             CreatedAt = DateTime.UtcNow
         };
         await _mongo.Topics.InsertOneAsync(topic);
+        await _subscriptionService.Subscribe(userId, topic.Id);
+      
         return topic;
     }
 
@@ -26,6 +32,11 @@ public class TopicService
     {
         return await _mongo.Topics.Find(_ => true)
             .ToListAsync();
+    }
+
+    public async Task<Topic> GetTopicById(string id)
+    {
+        return await _mongo.Topics.Find(t => t.Id == id).FirstOrDefaultAsync();
     }
 
 }
