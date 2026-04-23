@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import borblogo from '../assets/borblogo.png'
 import styles from './Dashboard.module.css'
+import React, {useState} from 'react'
 
 // TODO: replace with real auth state
 const currentUser = null
@@ -31,8 +32,27 @@ function getInitial(name) {
   return name.charAt(0).toUpperCase()
 }
 
+const ConfirmUnsubscribe = ({ isOpen, onConfirm, onCancel }) => {
+  if (!isOpen) {
+    return null
+  }
+
+  return (
+    <div>
+      <p>Are you sure you want to unsubscribe from this?</p>
+      <button onClick={onConfirm}>Yes</button>
+      <button onClick={onCancel}>Cancel</button>
+    </div>
+  )
+}
+
 export default function Dashboard() {
   const navigate = useNavigate()
+  const [showPopup, setShowPopup] = useState(false)
+
+  const handleUnsub = () => {
+    setShowPopup(false)
+  }
 
   return (
     <div className={styles.page}>
@@ -92,7 +112,15 @@ export default function Dashboard() {
                     {topic.recentCount} RECENT MESSAGE{topic.recentCount !== 1 ? 'S' : ''}
                   </span>
                 </div>
-                <button className={styles.unsubBtn}>Unsubscribe</button>
+                <button className={styles.unsubBtn} onClick={() => setShowPopup(true)}>
+                  Unsubscribe
+                </button>
+                <ConfirmUnsubscribe
+                  key = {topic.id}
+                  isOpen = {showPopup}
+                  onConfirm={handleUnsub}
+                  onCancel={() => setShowPopup(false)}
+                />
               </div>
 
               <p className={styles.topicDesc}>{topic.description}</p>
