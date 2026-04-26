@@ -21,6 +21,17 @@ public class TopicController : ControllerBase
         return Ok(topic);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(string id)
+    {
+        var topic = await _topicService.GetTopicById(id);
+        if (topic == null)
+        {
+            return NotFound();
+        }
+        return Ok(topic);
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {

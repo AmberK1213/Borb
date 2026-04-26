@@ -2,11 +2,37 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import borblogo from '../assets/borblogo.png'
 import styles from './SignIn.module.css'
+import { login, register } from '../api.js'
 
 export default function SignIn() {
   const navigate = useNavigate()
   const [tab, setTab] = useState('login')
   const [showPass, setShowPass] = useState(false)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    try {
+      let user
+      if (tab === 'login') {
+        user = await login(username, password)
+      } else {
+        if (password !== confirmPassword) {
+          setError('Passwords do not match')
+          return
+        }
+        user = await register(username, password)
+      }
+      localStorage.setItem('currentUser', JSON.stringify(user))
+      navigate('/')
+    } catch (err) {
+      setError(err.message)
+    }
+  }
 
   return (
     <div className={styles.page}>
@@ -37,21 +63,19 @@ export default function SignIn() {
         </div>
 
         {/* form */}
-        <div className={styles.form}>
-          {tab === 'register' && (
-            <div className={styles.field}>
-              <label className={styles.label}>
-                Email <span className={styles.req}>*</span>
-              </label>
-              <input className={styles.input} type="email" placeholder="Enter your email" />
-            </div>
-          )}
-
+        <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.field}>
             <label className={styles.label}>
               Username <span className={styles.req}>*</span>
             </label>
-            <input className={styles.input} type="text" placeholder="Enter your username" />
+            <input
+              className={styles.input}
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
           </div>
 
           <div className={styles.field}>
@@ -63,6 +87,9 @@ export default function SignIn() {
                 className={styles.input}
                 type={showPass ? 'text' : 'password'}
                 placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
               <button className={styles.eyeBtn} onClick={() => setShowPass(p => !p)} type="button">
                 {showPass ? '🙈' : '👁️'}
@@ -80,12 +107,17 @@ export default function SignIn() {
                   className={styles.input}
                   type={showPass ? 'text' : 'password'}
                   placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
                 />
               </div>
             </div>
           )}
 
-          <button className={styles.submitBtn}>
+          {error && <p className={styles.error}>{error}</p>}
+
+          <button className={styles.submitBtn} type="submit">
             {tab === 'login' ? 'Log In' : 'Create Account'}
           </button>
 
@@ -94,7 +126,7 @@ export default function SignIn() {
               Demo accounts: alice, bob, charlie (password: password123)
             </p>
           )}
-        </div>
+        </form>
       </div>
     </div>
   )
