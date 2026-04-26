@@ -31,4 +31,11 @@ public class TopicController : ControllerBase
         }
         return Ok(topic);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var topics = await _topicService.GetAllTopics();
+        return Ok(topics);
+    }
 }

@@ -56,7 +56,6 @@
   overflow: hidden;
 }
 
-/* tabs */
 .tabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -96,7 +95,6 @@
   background: var(--pink);
 }
 
-/* form */
 .form {
   padding: 32px 40px 36px;
   display: flex;
