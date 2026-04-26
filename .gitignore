@@ -64,3 +64,5 @@ node_modules/
 /Borb/obj/Borb.csproj.nuget.g.props
 /Borb/obj/project.assets.json
 /Borb/obj/project.nuget.cache
+/ClientApp/.vite/deps_temp_6768329d
+/ClientApp/.vite/deps_temp_9e5f9a1d
