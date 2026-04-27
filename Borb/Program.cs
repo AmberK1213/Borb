@@ -16,7 +16,7 @@ public partial class Program
         {
             options.AddPolicy("AllowFrontend", policy =>
             {
-                policy.WithOrigins("http://localhost:5173")
+                policy.WithOrigins("https://borbfront.onrender.com")
                       .AllowAnyMethod()
                       .AllowAnyHeader()
                       .AllowCredentials();
