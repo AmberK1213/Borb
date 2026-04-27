@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 namespace src.Models;
+[BsonIgnoreExtraElements]
 public class Topic
 {
     [BsonId]
@@ -11,4 +12,5 @@ public class Topic
     public string CreatedName { get; set; } = null!;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public int ViewCount { get; set; } = 0;
+    public string? CreatedName { get; set; }
 }
