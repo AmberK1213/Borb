@@ -4,6 +4,12 @@ using src.Services;
 public class TopicNotifier
 {
     private readonly SubscriptionService _subscriptionService;
+
+    public TopicNotifier(SubscriptionService subscriptionService)
+    {
+        _subscriptionService = subscriptionService;
+    }
+
     private List<IObserver> _observers = new();
     public void Subscribe(IObserver observer)
     {
