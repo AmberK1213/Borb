@@ -7,6 +7,7 @@ import './index.css'
 import NewTopic from './pages/newTopic'
 import BrowseTopics from './pages/BrowseTopics'
 import TopicFullView from './pages/TopicFulllView'
+import Statistics from './pages/Statistics'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/signin" element={<SignIn />} />
         <Route path="/newTopic" element={<NewTopic />} />
         <Route path="/browse" element={<BrowseTopics />} />
+        <Route path="/statistics" element={<Statistics />} />
         <Route path="/topic/:id" element={<TopicFullView />} />
       </Routes>
     </BrowserRouter>

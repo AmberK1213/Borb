@@ -28,6 +28,13 @@ public class TopicService
         return topic;
     }
 
+        public async Task IncrementViewCount(string id)
+    {
+        var filter = Builders<Topic>.Filter.Eq(t => t.Id, id);
+        var update = Builders<Topic>.Update.Inc(t => t.ViewCount, 1);
+        await _mongo.Topics.UpdateOneAsync(filter, update);
+    }
+
     public async Task<List<Topic>> GetAllTopics()
     {
         return await _mongo.Topics.Find(_ => true)
