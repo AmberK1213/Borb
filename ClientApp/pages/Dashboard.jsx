@@ -2,7 +2,15 @@ import { useNavigate } from 'react-router-dom'
 import borblogo from '../assets/borblogo.png'
 import styles from './Dashboard.module.css'
 import { useState, useEffect } from 'react'
-import { getUserSubscriptions, getMessages, unsubscribe, getTopicById } from '../api.js'
+import * as signalR from '@microsoft/signalr'
+import {
+  SIGNALR_BASE,
+  getUserSubscriptions,
+  getMessages,
+  unsubscribe,
+  getTopicById,
+  getNotifications,
+} from '../api.js'
 
 // TODO: replace with real auth state
 const getCurrentUser = () => {
@@ -33,20 +41,59 @@ const SUBSCRIBED_TOPICS = [
 ]
 
 function getInitial(name) {
-  return name.charAt(0).toUpperCase()
+  return name?.charAt(0).toUpperCase() || 'U'
 }
 
 export default function Dashboard() {
   const navigate = useNavigate()
   const [currentUser, setCurrentUser] = useState(getCurrentUser())
   const [subscribedTopics, setSubscribedTopics] = useState([])
+  const [notifications, setNotifications] = useState([])
+  const [liveNotice, setLiveNotice] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (currentUser) {
       fetchSubscribedTopics()
+      fetchNotifications()
     } else {
       setLoading(false)
+    }
+  }, [currentUser])
+
+  useEffect(() => {
+    if (!currentUser) return
+
+    let isDisposed = false
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl(`${SIGNALR_BASE}/hubs/notifications?userId=${encodeURIComponent(currentUser.id)}`)
+      .withAutomaticReconnect()
+      .build()
+
+    connection.on('NotificationReceived', (notification) => {
+      setNotifications(prev => {
+        if (prev.some(item => item.id === notification.id)) return prev
+        return [notification, ...prev].slice(0, 10)
+      })
+      setLiveNotice(notification)
+      fetchSubscribedTopics()
+    })
+
+    connection.start().catch(error => {
+      if (!isDisposed) {
+        console.error('Failed to connect to notifications:', error)
+      }
+    })
+
+    return () => {
+      isDisposed = true
+      connection.off('NotificationReceived')
+
+      if (connection.state !== signalR.HubConnectionState.Disconnected) {
+        connection.stop().catch(error => {
+          console.error('Failed to disconnect from notifications:', error)
+        })
+      }
     }
   }, [currentUser])
 
@@ -82,10 +129,21 @@ export default function Dashboard() {
     }
   }
 
+  const fetchNotifications = async () => {
+    try {
+      const result = await getNotifications(currentUser.id)
+      setNotifications(result.slice(-10).reverse())
+    } catch (error) {
+      console.error('Failed to fetch notifications:', error)
+    }
+  }
+
   const handleLogout = () => {
     localStorage.removeItem('currentUser')
     setCurrentUser(null)
     setSubscribedTopics([])
+    setNotifications([])
+    setLiveNotice(null)
   }
 
   const handleUnsubscribe = async (topicId) => {
@@ -107,7 +165,7 @@ export default function Dashboard() {
           <div>
             <h1 className={styles.brandName}>Borb</h1>
             {currentUser
-              ? <p className={styles.welcome}>Welcome back, {currentUser.Username}!</p>
+              ? <p className={styles.welcome}>Welcome back, {currentUser.username}!</p>
               : <p className={styles.welcome}>Your message exchange community</p>
             }
           </div>
@@ -141,6 +199,40 @@ export default function Dashboard() {
           💬 Browse Topics
         </button>
       </div>
+
+      {currentUser && (
+        <section className={styles.notifications}>
+          <div className={styles.notificationHeader}>
+            <h2 className={styles.notificationTitle}>Notifications</h2>
+            <span className={styles.notificationCount}>{notifications.length}</span>
+          </div>
+
+          {liveNotice && (
+            <div className={styles.liveNotice}>
+              New message in a subscribed topic: {liveNotice.message}
+            </div>
+          )}
+
+          {notifications.length === 0 ? (
+            <p className={styles.emptyNotifications}>No notifications yet.</p>
+          ) : (
+            <div className={styles.notificationList}>
+              {notifications.map((notification) => (
+                <button
+                  key={notification.id}
+                  className={styles.notificationItem}
+                  onClick={() => navigate(`/topic/${notification.topicId}`)}
+                >
+                  <span className={styles.notificationMessage}>{notification.message}</span>
+                  <span className={styles.notificationDate}>
+                    {new Date(notification.createdAt).toLocaleString()}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
       {/* subscribed topics */}
       <div className={styles.content}>

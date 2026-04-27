@@ -9,7 +9,8 @@ public class Topic
     public string Id { get; set; } = null!;
     public string Title { get; set; } = null!;
     public string CreatedBy { get; set; } = null!;
+    public string CreatedName { get; set; } = null!;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public int ViewCount { get; set; } = 0;
-    public string? CreatedName { get; set; }
+   
 }
