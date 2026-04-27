@@ -11,13 +11,15 @@ public partial class Program
 
         // Add services to the container.
         builder.Services.AddControllers();
+        builder.Services.AddSignalR();
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowFrontend", policy =>
             {
                 policy.WithOrigins("http://localhost:5173")
                       .AllowAnyMethod()
-                      .AllowAnyHeader();
+                      .AllowAnyHeader()
+                      .AllowCredentials();
             });
         });
         builder.Services.AddSingleton<MongoDbService>();
@@ -45,6 +47,7 @@ public partial class Program
         app.UseRouting();
         app.UseAuthorization();
         app.MapControllers();
+        app.MapHub<NotificationHub>("/hubs/notifications");
         
 
         app.Run();

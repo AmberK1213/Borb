@@ -21,7 +21,7 @@ export default function StartNewTopic() {
   }
 
   try {
-    await createTopic(title, user.id)
+    await createTopic(title, user.id, user.Username)
     alert('Topic created!')
 
     navigate('/') // go back to dashboard

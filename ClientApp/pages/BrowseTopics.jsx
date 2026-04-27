@@ -139,7 +139,7 @@ export default function BrowseTopics() {
                   <div className={styles.topicFooter}>
                     <span className={styles.metaItem}>👁 {topic.viewCount} views</span>
                     <span className={styles.metaItem}>
-                      Started by <strong>{topic.createdBy}</strong>
+                      Started by <strong>{topic.createdName || topic.createdBy}</strong>
                     </span>
                     <span className={styles.metaItem}>
                       {new Date(topic.createdAt).toLocaleDateString()}

@@ -59,12 +59,13 @@ export default function TopicPage() {
       {/* Topic Header */}
       <div className={styles.topicCard}>
         <div>
-          <h2>{topic?.Title}</h2>
+          <h2>{topic?.title || 'Topic'}</h2>
           <p className={styles.description}>
-            {topic?.Description || 'Discuss technology and programming'}
+            Started by {topic?.createdName || topic?.createdBy || 'Unknown'} on{' '}
+            {topic?.createdAt ? new Date(topic.createdAt).toLocaleDateString() : 'an unknown date'}
           </p>
         </div>
-        <span className={styles.views}>33 VIEWS</span>
+        <span className={styles.views}>{topic?.viewCount ?? 0} VIEWS</span>
       </div>
 
       {/* Post Message */}
@@ -84,8 +85,8 @@ export default function TopicPage() {
       </h3>
 
       <div className={styles.messages}>
-        {messages.map((msg) => (
-          <div key={msg.Id} className={styles.messageCard}>
+        {messages.map((msg, index) => (
+          <div key={index} className={styles.messageCard}>
             <div className={styles.avatar}>
               {msg.user?.[0]?.toUpperCase() || 'U'}
             </div>
