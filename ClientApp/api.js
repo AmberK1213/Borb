@@ -1,5 +1,5 @@
-const API_BASE = 'https://localhost:5001/api';
-export const SIGNALR_BASE = 'https://localhost:5001';
+const API_BASE = 'https://borb.onrender.com/api';
+export const SIGNALR_BASE = 'https://borb.onrender.com/';
 
 export async function apiRequest(endpoint, options = {}) {
   const url = `${API_BASE}${endpoint}`;
