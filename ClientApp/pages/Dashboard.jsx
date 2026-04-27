@@ -69,7 +69,8 @@ export default function Dashboard() {
             user: msg.createdBy,
             date: new Date(msg.createdAt).toLocaleString(),
             text: msg.content,
-          })),
+          
+          }))
     }
   })
 )
@@ -90,7 +91,7 @@ export default function Dashboard() {
   const handleUnsubscribe = async (topicId) => {
     if (!currentUser) return
     try {
-      await unsubscribe(currentUser.Id, topicId)
+      await unsubscribe(currentUser.id, topicId)
       setSubscribedTopics(prev => prev.filter(t => t.id !== topicId))
     } catch (error) {
       console.error('Failed to unsubscribe:', error)
@@ -179,7 +180,7 @@ export default function Dashboard() {
                   ))}
                 </div>
 
-                <button className={styles.viewTopicBtn}>
+                <button className={styles.viewTopicBtn} onClick={() => navigate(`/topic/${topic.id}`)}>
                   View Full Topic & Post Message
                 </button>
               </div>

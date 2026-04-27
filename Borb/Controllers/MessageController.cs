@@ -21,9 +21,8 @@ public class MessageController: ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateMessage([FromBody] Message message)
     {
-        var userId = "Amber";
-        message.CreatedBy = userId;
-        message.CreatedAt = DateTime.UtcNow;
+       
+        message.CreatedAt = DateTime.UtcNow;     
 
         await _messageService.Create(message);
         return Ok(message);

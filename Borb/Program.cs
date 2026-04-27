@@ -24,7 +24,7 @@ public partial class Program
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<TopicService>();
         builder.Services.AddScoped<SubscriptionService>();
-        builder.Services.AddSingleton<TopicNotifier>();
+        builder.Services.AddScoped<TopicNotifier>();
         builder.Services.AddScoped<MessageService>();
         builder.Services.AddScoped<NotificationService>();
         builder.Services.AddScoped<IObserver, UserObserver>();
