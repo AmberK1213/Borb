@@ -16,7 +16,8 @@ public class TopicController : ControllerBase
     {
         var topic = await _topicService.CreateTopic(
             request.Title, 
-            request.UserId
+            request.UserId,
+            request.Username
             );
         return Ok(topic);
     }

@@ -1,4 +1,5 @@
 const API_BASE = 'https://localhost:5001/api';
+export const SIGNALR_BASE = 'https://localhost:5001';
 
 export async function apiRequest(endpoint, options = {}) {
   const url = `${API_BASE}${endpoint}`;
@@ -47,12 +48,21 @@ export async function getAllTopics() {
 export async function getTopicById(id) {
   return apiRequest(`/topics/${id}`);
 }
-
 export async function createTopic(title, userId) {
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'))
+
+  if (!currentUser) {
+    throw new Error("User not logged in")
+  }
+
   return apiRequest('/topics', {
     method: 'POST',
-    body: JSON.stringify({ title, userId }),
-  });
+    body: JSON.stringify({
+      Title: title,
+      UserId: currentUser.id,
+      Username: currentUser.username
+    }),
+  })
 }
 
 // Subscriptions
@@ -84,4 +94,9 @@ export async function createMessage(message) {
     method: 'POST',
     body: JSON.stringify(message),
   });
+}
+
+// Notifications
+export async function getNotifications(userId) {
+  return apiRequest(`/notifications/${userId}`);
 }

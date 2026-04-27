@@ -14,12 +14,13 @@ public class TopicService
         _subscriptionService = subscriptionService;
     }
 
-    public async Task<Topic> CreateTopic(string title, string userId)
+    public async Task<Topic> CreateTopic(string title, string userId,string userName)
     {
         var topic = new Topic
         {
             Title = title,
             CreatedBy = userId,
+            CreatedName = userName,
             CreatedAt = DateTime.UtcNow
         };
         await _mongo.Topics.InsertOneAsync(topic);

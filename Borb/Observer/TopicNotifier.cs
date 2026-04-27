@@ -5,9 +5,10 @@ public class TopicNotifier
 {
     private readonly SubscriptionService _subscriptionService;
 
-    public TopicNotifier(SubscriptionService subscriptionService)
+    public TopicNotifier(SubscriptionService subscriptionService, IEnumerable<IObserver> observers)
     {
         _subscriptionService = subscriptionService;
+        _observers.AddRange(observers);
     }
 
     private List<IObserver> _observers = new();

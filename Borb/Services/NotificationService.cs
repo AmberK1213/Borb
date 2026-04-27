@@ -10,7 +10,7 @@ public class NotificationService
         _mongo = mongo;
     }
 
-    public async Task Create(string userId, Message message)
+    public async Task<Notification> Create(string userId, Message message)
     {
         var notification = new Notification
         {
@@ -21,12 +21,13 @@ public class NotificationService
         };
 
         await _mongo.Notifications.InsertOneAsync(notification);
-
+        return notification;
     }
     public async Task<List<Notification>> GetByUser(string userId)
     {
         return await _mongo.Notifications
             .Find(x => x.UserId == userId)
+            .SortBy(x => x.CreatedAt)
             .ToListAsync();
     }
 }
